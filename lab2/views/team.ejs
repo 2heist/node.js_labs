@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= person.name %></title>
+		<link rel="stylesheet" href="/style.css" />
+	</head>
+	<body>
+		<h1><%= person.name %></h1>
+		<img src="<%= person.photo %>" width="200" />
+
+		<p><strong>Role:</strong> <%= person.role %></p>
+		<p><strong>Location:</strong> <%= person.location %></p>
+		<p><strong>Email:</strong> <%= person.email %></p>
+		<p><strong>Bio:</strong> <%= person.bio %></p>
+
+		<a href="/">Go back</a>
+	</body>
+</html>
