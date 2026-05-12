@@ -2,56 +2,49 @@ const fs = require('fs');
 const fsPromises = require('fs').promises;
 const path = require('path');
 
-const dataPath = path.join(__dirname, '../data/games.json');
+const dataPath = path.join(__dirname, '../data/vacancies.json');
 
-class GameRepository {
-  static getAllGamesSync() {
-    try{
-      const rawData = fs.readFileSync(dataPath, 'utf-8');
-      return JSON.parse(rawData);
+class VacancyRepository {
+  getAllSync() {
+    try {
+      const data = fs.readFileSync(dataPath, 'utf8');
+      return JSON.parse(data);
     } catch (error) {
-      console.error('Помилка синхронного читання:', error);
-      return []; //empty array in case of error
+      return [];
     }
   }
 
-  static getAllGamesCallback(callback) {
-    fs.readFile(dataPath, 'utf-8', (err, rawData) => {
+  getAllCallback(callback) {
+    fs.readFile(dataPath, 'utf8', (err, data) => {
       if (err) {
         return callback(err, null);
       }
-      
       try {
-        const games = JSON.parse(rawData);  
-
-        callback(null, games);
+        const vacancies = JSON.parse(data);
+        callback(null, vacancies);
       } catch (parseError) {
         callback(parseError, null);
       }
     });
   }
 
-  static getAllGamesPromise() {
-    return fsPromises.readFile(dataPath, 'utf-8')
-      .then( rawData => {
-        return JSON.parse(rawData);
-      })
+  getAllPromise() {
+    return fsPromises.readFile(dataPath, 'utf8')
+      .then(data => JSON.parse(data))
       .catch(error => {
-        console.error("Promise reading mistake")
         throw error;
       });
   }
 
-  static async getAllGamesAsyncAwait() {
+  // use this
+  async getAllAsyncAwait() {
     try {
-      const rawData = await fsPromises.readFile(dataPath, 'utf-8');
-      
-      return JSON.parse(rawData);
+      const data = await fsPromises.readFile(dataPath, 'utf8');
+      return JSON.parse(data);
     } catch (error) {
-      console.error('Помилка async/await читання:', error);
       throw error;
     }
   }
 }
 
-module.exports = GameRepository;
+module.exports = new VacancyRepository();
