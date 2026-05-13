@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -11,11 +10,16 @@ const pool = new Pool({
 });
 
 pool.connect()
-    .then(() => {
+    .then((client) => {
         console.log("Connected to PostgreSQL");
+        client.release();
     })
     .catch((err) => {
         console.error("Database connection error:", err);
     });
+
+pool.on('error', (err) => {
+    console.error('Unexpected error on idle client', err);
+});
 
 module.exports = pool;
