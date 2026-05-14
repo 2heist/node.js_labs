@@ -1,60 +1,100 @@
-const pool = require('../config/db');
+const pool = require("../../database/db");
 
 class VacancyRepository {
   async getAll(keyword = '') {
     const query = `
-      SELECT * FROM vacancies 
+      SELECT id, title, company, salary, description 
+      FROM vacancies 
       WHERE title ILIKE $1 OR description ILIKE $1 
-      ORDER BY created_at DESC;
+      ORDER BY id DESC;
     `;
     const result = await pool.query(query, [`%${keyword}%`]);
     return result.rows;
   }
 
   async getById(id) {
-    const query = 'SELECT * FROM vacancies WHERE id = $1;';
-    const result = await pool.query(query, [id]);
-    return result.rows[0];
+    const vacancyQuery = 'SELECT * FROM vacancies WHERE id = $1;';
+    const vacancyResult = await pool.query(vacancyQuery, [id]);
+    const vacancy = vacancyResult.rows[0];
+
+    if (vacancy) {
+      const reqQuery = 'SELECT requirement FROM requirements WHERE vacancy_id = $1;';
+      const reqResult = await pool.query(reqQuery, [id]);
+      vacancy.requirements = reqResult.rows.map(row => row.requirement);
+    }
+
+    return vacancy;
   }
 
-  async create(data) {
+  async create(vacancyData, requirementsArray) {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
-      const query = `
-        INSERT INTO vacancies (title, description, requirements, employer_id)
+
+      const insertVacancyQuery = `
+        INSERT INTO vacancies (title, company, salary, description)
         VALUES ($1, $2, $3, $4)
-        RETURNING *;
+        RETURNING id;
       `;
-      const values = [data.title, data.description, data.requirements, data.employer_id];
-      const result = await client.query(query, values);
+      const vacancyValues = [
+        vacancyData.title, 
+        vacancyData.company || 'Не вказано', 
+        vacancyData.salary || '', 
+        vacancyData.description || ''
+      ];
+      const vacancyResult = await client.query(insertVacancyQuery, vacancyValues);
+      const newVacancyId = vacancyResult.rows[0].id;
+
+      if (requirementsArray.length > 0) {
+        const insertReqQuery = 'INSERT INTO requirements (vacancy_id, requirement) VALUES ($1, $2);';
+        for (const req of requirementsArray) {
+          await client.query(insertReqQuery, [newVacancyId, req]);
+        }
+      }
+
       await client.query('COMMIT');
-      return result.rows[0];
-    } catch (e) {
+      return newVacancyId;
+    } catch (error) {
       await client.query('ROLLBACK');
-      throw e;
+      throw error;
     } finally {
       client.release();
     }
   }
 
-  async update(id, data) {
+  async update(id, vacancyData, requirementsArray) {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
-      const query = `
+
+      const updateVacancyQuery = `
         UPDATE vacancies 
-        SET title = $1, description = $2, requirements = $3 
-        WHERE id = $4
-        RETURNING *;
+        SET title = $1, company = $2, salary = $3, description = $4 
+        WHERE id = $5;
       `;
-      const values = [data.title, data.description, data.requirements, id];
-      const result = await client.query(query, values);
+      const vacancyValues = [
+        vacancyData.title, 
+        vacancyData.company || 'Не вказано', 
+        vacancyData.salary || '', 
+        vacancyData.description || '', 
+        id
+      ];
+      await client.query(updateVacancyQuery, vacancyValues);
+
+      await client.query('DELETE FROM requirements WHERE vacancy_id = $1;', [id]);
+      
+      if (requirementsArray.length > 0) {
+        const insertReqQuery = 'INSERT INTO requirements (vacancy_id, requirement) VALUES ($1, $2);';
+        for (const req of requirementsArray) {
+          await client.query(insertReqQuery, [id, req]);
+        }
+      }
+
       await client.query('COMMIT');
-      return result.rows[0];
-    } catch (e) {
+      return true;
+    } catch (error) {
       await client.query('ROLLBACK');
-      throw e;
+      throw error;
     } finally {
       client.release();
     }
@@ -64,13 +104,15 @@ class VacancyRepository {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
-      const query = 'DELETE FROM vacancies WHERE id = $1 RETURNING id;';
-      const result = await client.query(query, [id]);
+      
+      await client.query('DELETE FROM requirements WHERE vacancy_id = $1;', [id]);
+      await client.query('DELETE FROM vacancies WHERE id = $1;', [id]);
+      
       await client.query('COMMIT');
-      return result.rowCount > 0;
-    } catch (e) {
+      return true;
+    } catch (error) {
       await client.query('ROLLBACK');
-      throw e;
+      throw error;
     } finally {
       client.release();
     }
