@@ -4,10 +4,10 @@ const employerController = require("../controllers/employerController.js");
 
 router.get("/admin", employerController.getAdminPanel);
 
-router.get("/admin/create", employerController.getCreateForm);
+router.get("/admin/create", employerController.getCreateVacancyForm);
 router.post("/admin/create", employerController.createVacancy);
 
-router.get("/admin/edit/:id", employerController.getEditForm);
+router.get("/admin/edit/:id", employerController.getEditVacancyForm);
 router.post("/admin/edit/:id", employerController.updateVacancy);
 
 router.get("/admin/delete/:id", employerController.deleteVacancy);

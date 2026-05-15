@@ -1,38 +1,15 @@
 const express = require("express");
-const pool = require("./database/db");
-//const repository = require("./src/repositories/testRepository");
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true })); 
 
-app.get("/", (req, res) => {
-  res.render("home");
-});
+const userRoutes = require("./src/routes/userRoutes");
+const employerRoutes = require("./src/routes/employerRoutes");
 
-app.get("/vacancies", (req, res) => {
-  res.render("vacancies", { vacancies: [] });
-});
-
-app.get("/admin", (req, res) => {
-  res.render("admin-panel", { vacancies: [] });
-});
-
-app.get("/vacancy/:id", (req, res) => {
-  res.render("vacancy-details", { vacancy: null });
-});
-
-app.get("/search", (req, res) => {
-  res.render("search-results", { vacancies: [] });
-});
-
-/*
-app.get("/test-db", async (req, res) => {
-    const vacancies = await repository.getAllVacancies();
-    res.json(vacancies);
-
-});
-*/
+app.use("/", userRoutes);
+app.use("/", employerRoutes);
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
