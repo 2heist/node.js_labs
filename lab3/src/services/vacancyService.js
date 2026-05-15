@@ -24,13 +24,19 @@ class VacancyService {
   async searchVacancies(keyword) {
     const vacancies = await vacancyRepository.getAll();
     if (!keyword) return vacancies;
-    
+
     const lowerKeyword = keyword.toLowerCase();
-    return vacancies.filter(v => 
-      v.title.toLowerCase().includes(lowerKeyword) || 
-      v.description.toLowerCase().includes(lowerKeyword) ||
-      v.company.toLowerCase().includes(lowerKeyword)
-    );
+    return vacancies.filter((v) => {
+      const title = (v.title || "").toLowerCase();
+      const description = (v.description || "").toLowerCase();
+      const company = (v.company || "").toLowerCase();
+
+      return (
+        title.includes(lowerKeyword) ||
+        description.includes(lowerKeyword) ||
+        company.includes(lowerKeyword)
+      );
+    });
   }
 }
 
