@@ -1,0 +1,28 @@
+
+<%- include('partials/header') %>
+<main>
+    <div class="vacancy-card">
+        <h2><%= vacancy.title %></h2>
+        <p>
+            Компанія:
+            <%= vacancy.company %>
+        </p>
+        <p>
+            Зарплата:
+            <%= vacancy.salary %>
+        </p>
+        <h3>Опис вакансії</h3>
+        <p>
+            <%= vacancy.description %>
+        </p>
+        <h3>Вимоги</h3>
+        <ul>
+            <% vacancy.requirements.forEach(requirement => { %>
+                <li>
+                    <%= requirement %>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</main>
+<%- include('partials/footer') %>
