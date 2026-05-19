@@ -1,3 +1,5 @@
+//старий шаблон з лаб 4
+
 const vacancyRepository = require("../repositories/vacancieRepository");
 
 class VacancyService {

@@ -1,3 +1,5 @@
+//старий шаблон з лаб 4
+
 const vacancyService = require("../services/vacancyService");
 
 const getAdminPanel = async (req, res) => {
