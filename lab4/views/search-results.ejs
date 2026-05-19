@@ -1,0 +1,24 @@
+
+<%- include('partials/header') %>
+<main>
+    <h2>
+        Результати пошуку
+    </h2>
+    <% if (vacancies.length === 0) { %>
+        <p>
+            Нічого не знайдено.
+        </p>
+    <% } else { %>
+        <% vacancies.forEach(vacancy => { %>
+            <div class="vacancy-card">
+                <h3>
+                    <%= vacancy.title %>
+                </h3>
+                <p>
+                    <%= vacancy.company %>
+                </p>
+            </div>
+        <% }) %>
+    <% } %>
+</main>
+<%- include('partials/footer') %>

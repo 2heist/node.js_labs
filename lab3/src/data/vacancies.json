@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "title": "Junior Full-Stack Developer",
+    "description": "Шукаємо талановитого розробника для створення та підтримки сучасних вебзастосунків. Робота в команді над цікавими продуктами.",
+    "requirements": [
+      "Node.js",
+      "Express",
+      "React",
+      "TypeScript",
+      "Базове розуміння MVC"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Middle Frontend Engineer",
+    "description": "Компанія шукає спеціаліста для розробки UI-компонентів та оптимізації клієнтської частини.",
+    "requirements": [
+      "JavaScript",
+      "React",
+      "Redux",
+      "HTML/CSS"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "System Administrator",
+    "description": "Потрібен системний адміністратор для підтримки офісної інфраструктури та налаштування серверів.",
+    "requirements": [
+      "Linux",
+      "Мережі",
+      "Docker",
+      "Базові навички написання bash-скриптів"
+    ]
+  },
+  {
+    "id": "1778824816279",
+    "title": "Фулстак",
+    "company": "Microsoft",
+    "salary": "1000",
+    "description": "none",
+    "requirements": [
+      "-"
+    ]
+  }
+]
