@@ -1,0 +1,21 @@
+
+<%- include('partials/header') %>
+<main>
+  <h2>Редагування вакансії</h2>
+  <form action="/admin/edit/<%= vacancy.id %>" method="POST">
+    <label>Назва вакансії</label>
+    <input type="text" name="title" value="<%= vacancy.title %>">
+    <label>Компанія</label>
+    <input type="text" name="company" value="<%= vacancy.company %>">
+    <label>Зарплата</label>
+    <input type="text" name="salary" value="<%= vacancy.salary %>">
+    <label>Опис</label>
+    <textarea name="description"><%= vacancy.description %></textarea>
+    <label>Вимоги (через кому або новий рядок)</label>
+    <textarea name="requirements"><%= vacancy.requirements.join(', ') %></textarea>
+    <button type="submit" class="btn">
+      Зберегти зміни
+    </button>
+  </form>
+</main>
+<%- include('partials/footer') %>
