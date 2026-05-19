@@ -1,0 +1,28 @@
+
+<%- include('partials/header') %>
+<main>
+    <h2>Адмін-панель</h2>
+    <a href="/admin/create" class="btn">
+        Створити вакансію
+    </a>
+    <% vacancies.forEach(vacancy => { %>
+        <div class="vacancy-card">
+            <h3>
+                <%= vacancy.title %>
+            </h3>
+            <a
+                href="/admin/edit/<%= vacancy.id %>"
+                class="btn"
+            >
+                Редагувати
+            </a>
+            <a
+                href="/admin/delete/<%= vacancy.id %>"
+                class="btn btn-delete"
+            >
+                Видалити
+            </a>
+        </div>
+    <% }) %>
+</main>
+<%- include('partials/footer') %>
