@@ -10,18 +10,29 @@
             <h3>
                 <%= vacancy.title %>
             </h3>
-            <a
-                href="/admin/edit/<%= vacancy.id %>"
-                class="btn"
-            >
-                Редагувати
-            </a>
-            <a
-                href="/admin/delete/<%= vacancy.id %>"
-                class="btn btn-delete"
-            >
-                Видалити
-            </a>
+
+            <div>
+                <form action="/admin/duplicate/<%= vacancy.id %>" method="POST" class="inline-form">
+                    <button 
+                        type="submit" 
+                        class="btn btn-duplicate"
+                    >
+                        Дублювати
+                    </button>
+                </form>
+                <a
+                    href="/admin/edit/<%= vacancy.id %>"
+                    class="btn"
+                >
+                    Редагувати
+                </a>
+                <a
+                    href="/admin/delete/<%= vacancy.id %>"
+                    class="btn btn-delete"
+                >
+                    Видалити
+                </a>
+            </div>
         </div>
     <% }) %>
 </main>
