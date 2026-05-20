@@ -1,0 +1,39 @@
+
+<%- include('partials/header') %>
+<main>
+    <h2>Адмін-панель</h2>
+    <a href="/admin/create" class="btn">
+        Створити вакансію
+    </a>
+    <% vacancies.forEach(vacancy => { %>
+        <div class="vacancy-card">
+            <h3>
+                <%= vacancy.title %>
+            </h3>
+
+            <div>
+                <form action="/admin/duplicate/<%= vacancy.id %>" method="POST" class="inline-form">
+                    <button 
+                        type="submit" 
+                        class="btn btn-duplicate"
+                    >
+                        Дублювати
+                    </button>
+                </form>
+                <a
+                    href="/admin/edit/<%= vacancy.id %>"
+                    class="btn"
+                >
+                    Редагувати
+                </a>
+                <a
+                    href="/admin/delete/<%= vacancy.id %>"
+                    class="btn btn-delete"
+                >
+                    Видалити
+                </a>
+            </div>
+        </div>
+    <% }) %>
+</main>
+<%- include('partials/footer') %>

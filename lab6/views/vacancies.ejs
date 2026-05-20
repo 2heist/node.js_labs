@@ -1,0 +1,31 @@
+
+<%- include('partials/header') %>
+<main>
+    <h2>Список вакансій</h2>
+    <form action="/search" method="GET" class="search-box">
+        <input
+            type="text"
+            name="keyword"
+            placeholder="Введіть ключове слово"
+        >
+        <button type="submit" class="btn">
+            Пошук
+        </button>
+    </form>
+    <% vacancies.forEach(vacancy => { %>
+        <div class="vacancy-card">
+            <h3><%= vacancy.title %></h3>
+            <p>
+                Компанія:
+                <%= vacancy.company %>
+            </p>
+            <a
+                href="/vacancies/<%= vacancy.id %>"
+                class="btn"
+            >
+                Детальніше
+            </a>
+        </div>
+    <% }) %>
+</main>
+<%- include('partials/footer') %>

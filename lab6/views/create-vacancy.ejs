@@ -1,0 +1,34 @@
+
+<%- include('partials/header') %>
+<main>
+    <h2>Створення вакансії</h2>
+    <form action="/admin/create" method="POST">
+        <label>Назва вакансії</label>
+        <input
+            type="text"
+            name="title"
+        >
+        <label>Компанія</label>
+        <input
+            type="text"
+            name="company"
+        >
+        <label>Зарплата</label>
+        <input
+            type="text"
+            name="salary"
+        >
+        <label>Опис</label>
+        <textarea
+            name="description"
+        ></textarea>
+        <label>Вимоги</label>
+        <textarea
+            name="requirements"
+        ></textarea>
+        <button type="submit" class="btn">
+            Створити
+        </button>
+    </form>
+</main>
+<%- include('partials/footer') %>
