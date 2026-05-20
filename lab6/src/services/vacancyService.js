@@ -87,6 +87,22 @@ class VacancyService {
         throw error;
       }
   }
+
+  async getVacanciesForApi(page = 1, limit = 10, title = '') {
+    const parsedPage = parseInt(page, 10);
+    const parsedLimit = parseInt(limit, 10);
+    
+    const offset = (parsedPage - 1) * parsedLimit;
+
+    const result = await vacancyRepository.findAllWithFilters(parsedLimit, offset, title);
+
+    return {
+      totalItems: result.count,
+      totalPages: Math.ceil(result.count / parsedLimit),
+      currentPage: parsedPage,
+      vacancies: result.rows
+    };
+  }
 }
 
 module.exports = new VacancyService();

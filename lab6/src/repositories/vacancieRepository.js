@@ -91,20 +91,37 @@ class VacancyRepository {
     }
   }
 
-  async delete(id) {
-  const transaction = await sequelize.transaction();
-  try {
-    await Vacancy.destroy({ 
-      where: { id },
-      transaction 
-    });
-    await transaction.commit();
-    return true;
-  } catch (error) {
-    await transaction.rollback();
-    throw error;
+    async delete(id) {
+    const transaction = await sequelize.transaction();
+    try {
+      await Vacancy.destroy({ 
+        where: { id },
+        transaction 
+      });
+      await transaction.commit();
+      return true;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   }
-}
+
+  async findAllWithFilters(limit, offset, filterTitle) {
+    const queryOptions = {
+      limit: limit,
+      offset: offset,
+    };
+
+    if (filterTitle) {
+      queryOptions.where = {
+        title: {
+          [Op.iLike]: `%${filterTitle}%` 
+        }
+      };
+    }
+
+    return await Vacancy.findAndCountAll(queryOptions);
+  }
 }
 
 module.exports = new VacancyRepository();
