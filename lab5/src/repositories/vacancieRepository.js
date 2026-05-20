@@ -92,9 +92,19 @@ class VacancyRepository {
   }
 
   async delete(id) {
-    await Vacancy.destroy({ where: { id } });
+  const transaction = await sequelize.transaction();
+  try {
+    await Vacancy.destroy({ 
+      where: { id },
+      transaction 
+    });
+    await transaction.commit();
     return true;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
   }
+}
 }
 
 module.exports = new VacancyRepository();
